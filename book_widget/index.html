@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opt - 노션 독서노트 위젯</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #faf8f5;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #d4734d;
+            --accent-hover: #c26643;
+            --border: #e5e1dc;
+            --shadow: rgba(26, 26, 26, 0.08);
+            --input-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #e09275, var(--accent));
+        }
+
+        .logo {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            animation: fadeInUp 0.6s ease-out 0.2s backwards;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+            flex: 1;
+        }
+
+        .setup-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border);
+            animation: fadeIn 0.8s ease-out 0.4s backwards;
+        }
+
+        .section-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Pretendard', sans-serif;
+            background: var(--input-bg);
+            transition: all 0.2s ease;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(212, 115, 77, 0.1);
+        }
+
+        .search-container {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border);
+            animation: fadeIn 0.8s ease-out 0.6s backwards;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Pretendard', sans-serif;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 115, 77, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #f0ede8;
+        }
+
+        .results {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .book-card {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .book-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .book-cover {
+            width: 100px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+
+        .book-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .book-title {
+            font-family: 'Nanum Myeongjo', serif;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .book-author {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .book-publisher {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .book-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .info-box {
+            background: #fffbf7;
+            border-left: 4px solid var(--accent);
+            padding: 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            line-height: 1.7;
+        }
+
+        .info-box strong {
+            color: var(--text-primary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        .error {
+            background: #fff0f0;
+            border: 1px solid #ffcccc;
+            color: #cc0000;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .success {
+            background: #f0fff0;
+            border: 1px solid #ccffcc;
+            color: #008800;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 640px) {
+            .book-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        .guide-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .guide-link:hover {
+            text-decoration: underline;
+        }
+
+        .api-url-group {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .api-url-group label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .api-url-group small {
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="logo">Opt</h1>
+        <p class="subtitle">클릭 한 번에 도서 정보를 노션에 가져오기</p>
+    </div>
+
+    <div class="container">
+        <div class="setup-section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                API 설정
+            </h2>
+            
+            <div class="api-url-group">
+                <label for="apiUrl">서버 API URL (선택사항)</label>
+                <input type="text" id="apiUrl" placeholder="예: https://your-project.vercel.app/api/search">
+                <small>Vercel/Netlify에 배포한 서버 URL을 입력하면 CORS 문제 없이 작동합니다. 비워두면 직접 호출을 시도합니다.</small>
+            </div>
+
+            <div class="input-group">
+                <label for="aladinKey">알라딘 API 키</label>
+                <input type="text" id="aladinKey" placeholder="알라딘 TTB 키를 입력하세요">
+                <div class="info-box">
+                    <strong>알라딘 API 키 발급:</strong> <a href="https://www.aladin.co.kr/ttb/wblog_manage.aspx" target="_blank" class="guide-link">여기</a>에서 무료로 발급받을 수 있습니다.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="notionToken">노션 통합 토큰</label>
+                <input type="password" id="notionToken" placeholder="노션 Integration Token을 입력하세요">
+            </div>
+
+            <div class="input-group">
+                <label for="notionDatabase">노션 데이터베이스 ID</label>
+                <input type="text" id="notionDatabase" placeholder="데이터베이스 ID를 입력하세요">
+                <div class="info-box">
+                    <strong>노션 설정 가이드:</strong><br>
+                    1. <a href="https://www.notion.so/my-integrations" target="_blank" class="guide-link">노션 통합 페이지</a>에서 새 통합을 만듭니다.<br>
+                    2. 생성된 토큰을 복사합니다.<br>
+                    3. 도서 데이터베이스를 만들고 다음 속성을 추가합니다:<br>
+                    &nbsp;&nbsp;&nbsp;- <strong>Title</strong> (제목 타입)<br>
+                    &nbsp;&nbsp;&nbsp;- <strong>Author</strong> (텍스트 타입)<br>
+                    &nbsp;&nbsp;&nbsp;- <strong>Genre</strong> (텍스트 타입)<br>
+                    &nbsp;&nbsp;&nbsp;- <strong>Total</strong> (숫자 타입)<br>
+                    4. 데이터베이스 페이지에서 "..." → "연결" → 생성한 통합을 선택합니다.<br>
+                    5. 데이터베이스 URL에서 ID를 복사합니다. (예: notion.so/myworkspace/<strong>abc123...</strong>?v=...)
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                도서 검색
+            </h2>
+
+            <div class="search-box">
+                <input type="text" id="searchQuery" class="search-input" placeholder="책 제목이나 저자를 검색하세요">
+                <button class="btn btn-primary" onclick="searchBooks()">검색</button>
+            </div>
+
+            <div id="message"></div>
+            <div id="results" class="results"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Made with ♥ for Notion lovers | Inspired by <a href="https://nomadcoders.co/community/thread/10907" target="_blank" class="guide-link">Opt</a>
+    </div>
+
+    <script>
+        // 로컬 스토리지에서 설정 불러오기
+        window.addEventListener('load', () => {
+            const apiUrl = localStorage.getItem('apiUrl');
+            const aladinKey = localStorage.getItem('aladinKey');
+            const notionToken = localStorage.getItem('notionToken');
+            const notionDatabase = localStorage.getItem('notionDatabase');
+
+            if (apiUrl) document.getElementById('apiUrl').value = apiUrl;
+            if (aladinKey) document.getElementById('aladinKey').value = aladinKey;
+            if (notionToken) document.getElementById('notionToken').value = notionToken;
+            if (notionDatabase) document.getElementById('notionDatabase').value = notionDatabase;
+        });
+
+        // 엔터 키로 검색
+        document.getElementById('searchQuery').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchBooks();
+        });
+
+        async function searchBooks() {
+            const apiUrl = document.getElementById('apiUrl').value.trim();
+            const aladinKey = document.getElementById('aladinKey').value.trim();
+            const query = document.getElementById('searchQuery').value.trim();
+            const messageDiv = document.getElementById('message');
+            const resultsDiv = document.getElementById('results');
+
+            // 설정 저장
+            localStorage.setItem('apiUrl', apiUrl);
+            localStorage.setItem('aladinKey', aladinKey);
+            localStorage.setItem('notionToken', document.getElementById('notionToken').value.trim());
+            localStorage.setItem('notionDatabase', document.getElementById('notionDatabase').value.trim());
+
+            if (!aladinKey) {
+                messageDiv.innerHTML = '<div class="error">알라딘 API 키를 입력해주세요.</div>';
+                return;
+            }
+
+            if (!query) {
+                messageDiv.innerHTML = '<div class="error">검색어를 입력해주세요.</div>';
+                return;
+            }
+
+            messageDiv.innerHTML = '<div class="loading"><div class="spinner"></div>검색 중...</div>';
+            resultsDiv.innerHTML = '';
+
+            try {
+                let data;
+                
+                if (apiUrl) {
+                    // 서버 API 사용
+                    const response = await fetch(`${apiUrl}?ttbkey=${aladinKey}&query=${encodeURIComponent(query)}`);
+                    if (!response.ok) throw new Error(`서버 오류: ${response.status}`);
+                    data = await response.json();
+                } else {
+                    // 직접 알라딘 API 호출
+                    const aladinUrl = `https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${aladinKey}&Query=${encodeURIComponent(query)}&QueryType=Title&MaxResults=10&start=1&SearchTarget=Book&output=JS&Version=20131101`;
+                    const response = await fetch(aladinUrl);
+                    if (!response.ok) throw new Error(`알라딘 API 오류: ${response.status}`);
+                    data = await response.json();
+                }
+
+                if (!data.item || data.item.length === 0) {
+                    messageDiv.innerHTML = '<div class="error">검색 결과가 없습니다.</div>';
+                    return;
+                }
+
+                messageDiv.innerHTML = `<div class="success">${data.item.length}개의 도서를 찾았습니다. 원하는 책을 클릭하세요!</div>`;
+                
+                resultsDiv.innerHTML = data.item.map(book => `
+                    <div class="book-card" onclick='addToNotion(${JSON.stringify(book).replace(/'/g, "&#39;")})'>
+                        <img src="${book.cover}" alt="${book.title}" class="book-cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22140%22%3E%3Crect fill=%22%23e5e1dc%22 width=%22100%22 height=%22140%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2212%22%3E이미지 없음%3C/text%3E%3C/svg%3E'">
+                        <div class="book-info">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">${book.author}</div>
+                            <div class="book-publisher">${book.publisher} · ${book.pubDate}</div>
+                            ${book.description ? `<div class="book-description">${book.description}</div>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error:', error);
+                messageDiv.innerHTML = `<div class="error">
+                    검색 중 오류가 발생했습니다.<br>
+                    <br>
+                    <strong>CORS 문제 해결방법:</strong><br>
+                    1. 위 "서버 API URL"에 배포된 서버 주소를 입력하세요<br>
+                    2. 또는 <a href="https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino" target="_blank" style="color: var(--accent);">CORS Unblock 확장프로그램</a> 설치<br>
+                    <br>
+                    에러: ${error.message}
+                </div>`;
+            }
+        }
+
+        async function addToNotion(book) {
+            const notionToken = document.getElementById('notionToken').value.trim();
+            const notionDatabase = document.getElementById('notionDatabase').value.trim();
+            const messageDiv = document.getElementById('message');
+
+            if (!notionToken || !notionDatabase) {
+                messageDiv.innerHTML = '<div class="error">노션 설정을 완료해주세요.</div>';
+                return;
+            }
+
+            messageDiv.innerHTML = '<div class="loading"><div class="spinner"></div>노션에 추가 중...</div>';
+
+            try {
+                const response = await fetch('https://api.notion.com/v1/pages', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${notionToken}`,
+                        'Content-Type': 'application/json',
+                        'Notion-Version': '2022-06-28'
+                    },
+                    body: JSON.stringify({
+                        parent: { database_id: notionDatabase },
+                        properties: {
+                            'Title': {
+                                title: [
+                                    {
+                                        text: {
+                                            content: book.title
+                                        }
+                                    }
+                                ]
+                            },
+                            'Author': {
+                                rich_text: [
+                                    {
+                                        text: {
+                                            content: book.author || ''
+                                        }
+                                    }
+                                ]
+                            },
+                            'Genre': {
+                                rich_text: [
+                                    {
+                                        text: {
+                                            content: book.categoryName || ''
+                                        }
+                                    }
+                                ]
+                            },
+                            'Total': {
+                                number: book.subInfo?.itemPage || null
+                            }
+                        },
+                        cover: book.cover ? {
+                            external: {
+                                url: book.cover
+                            }
+                        } : undefined,
+                        children: book.description ? [
+                            {
+                                object: 'block',
+                                type: 'paragraph',
+                                paragraph: {
+                                    rich_text: [
+                                        {
+                                            type: 'text',
+                                            text: {
+                                                content: book.description
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ] : undefined
+                    })
+                });
+
+                if (response.ok) {
+                    messageDiv.innerHTML = '<div class="success">✓ 노션에 성공적으로 추가되었습니다!</div>';
+                } else {
+                    const error = await response.json();
+                    console.error('Notion API Error:', error);
+                    messageDiv.innerHTML = `<div class="error">노션 추가 실패: ${error.message || '데이터베이스 설정을 확인해주세요.'}</div>`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                let errorMsg = '노션 추가 중 오류가 발생했습니다.<br>';
+                errorMsg += `토큰: ${notionToken ? '입력됨 ✓' : '미입력 ✗'}<br>`;
+                errorMsg += `DB ID: ${notionDatabase ? '입력됨 ✓' : '미입력 ✗'}<br>`;
+                errorMsg += `에러: ${error.message}`;
+                messageDiv.innerHTML = `<div class="error">${errorMsg}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
