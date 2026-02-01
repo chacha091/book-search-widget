@@ -1,5 +1,4 @@
 // api/search.js
-// Vercel Functions 폴더에 이 파일을 저장하세요
 
 export default async function handler(req, res) {
   // CORS 헤더 설정
