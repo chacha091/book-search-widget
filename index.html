@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opt - 노션 독서노트 위젯</title>
+    <title>Add Book</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,319 +15,265 @@
         }
 
         :root {
-            --bg-primary: #faf8f5;
-            --bg-secondary: #ffffff;
-            --text-primary: #1a1a1a;
-            --text-secondary: #666666;
-            --accent: #d4734d;
-            --accent-hover: #c26643;
-            --border: #e5e1dc;
-            --shadow: rgba(26, 26, 26, 0.08);
-            --input-bg: #ffffff;
+            --bg: #ffffff;
+            --text: #37352f;
+            --text-secondary: #787774;
+            --border: #e9e9e7;
+            --hover: #f7f6f3;
+            --primary: #2383e2;
+            --primary-hover: #1a6dc9;
+            --success: #0f7b6c;
+            --error: #e03e3e;
         }
 
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
+            font-family: 'Noto Sans KR', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-
-        .header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            padding: 2rem 1.5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), #e09275, var(--accent));
-        }
-
-        .logo {
-            font-family: 'Nanum Myeongjo', serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            letter-spacing: -0.02em;
-            margin-bottom: 0.5rem;
-            animation: fadeInDown 0.6s ease-out;
-        }
-
-        .subtitle {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            animation: fadeInUp 0.6s ease-out 0.2s backwards;
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 3rem 1.5rem;
-            flex: 1;
+            padding: 60px 20px 40px;
         }
 
-        .setup-section {
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px var(--shadow);
-            border: 1px solid var(--border);
-            animation: fadeIn 0.8s ease-out 0.4s backwards;
-        }
-
-        .section-title {
-            font-family: 'Nanum Myeongjo', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
+        /* 헤더 */
+        .header {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 12px;
+            margin-bottom: 40px;
         }
 
-        .section-number {
-            display: inline-flex;
+        .icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            color: white;
-            border-radius: 50%;
-            font-size: 1rem;
-            font-weight: 600;
-            font-family: 'Pretendard', sans-serif;
+            font-size: 28px;
         }
 
-        .input-group {
-            margin-bottom: 1.5rem;
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text);
         }
 
-        label {
-            display: block;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        input[type="text"],
-        input[type="password"],
-        select {
-            width: 100%;
-            padding: 0.875rem 1rem;
+        .settings-btn {
+            margin-left: auto;
+            padding: 8px 16px;
+            background: transparent;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-family: 'Pretendard', sans-serif;
-            background: var(--input-bg);
-            transition: all 0.2s ease;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        input:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(212, 115, 77, 0.1);
+        .settings-btn:hover {
+            background: var(--hover);
         }
 
-        .search-container {
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 2px 8px var(--shadow);
-            border: 1px solid var(--border);
-            animation: fadeIn 0.8s ease-out 0.6s backwards;
+        /* 검색 박스 */
+        .search-section {
+            margin-bottom: 32px;
         }
 
         .search-box {
-            display: flex;
-            gap: 0.75rem;
-            margin-bottom: 2rem;
+            position: relative;
+            width: 100%;
         }
 
         .search-input {
-            flex: 1;
-        }
-
-        .btn {
-            padding: 0.875rem 1.75rem;
-            border: none;
+            width: 100%;
+            padding: 12px 48px 12px 16px;
+            border: 1px solid var(--border);
             border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Pretendard', sans-serif;
-            white-space: nowrap;
+            font-size: 15px;
+            font-family: 'Noto Sans KR', sans-serif;
+            transition: all 0.2s;
         }
 
-        .btn-primary {
-            background: var(--accent);
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 16px;
+            background: var(--primary);
             color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(212, 115, 77, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: #f0ede8;
-        }
-
-        .results {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .book-card {
-            display: flex;
-            gap: 1.5rem;
-            padding: 1.5rem;
-            background: var(--bg-primary);
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.2s;
         }
 
-        .book-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 4px 16px var(--shadow);
-            transform: translateY(-2px);
+        .search-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* 탭 */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .tab.active {
+            color: var(--text);
+            border-bottom-color: var(--text);
+        }
+
+        .tab:hover {
+            color: var(--text);
+            background: var(--hover);
+        }
+
+        /* 메시지 */
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .message.success {
+            background: #e6fcf5;
+            color: var(--success);
+        }
+
+        .message.error {
+            background: #ffe2dd;
+            color: var(--error);
+        }
+
+        .message.loading {
+            background: var(--hover);
+            color: var(--text-secondary);
+        }
+
+        /* 책 리스트 */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .book-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .book-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .book-cover-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2/3;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .book-cover {
-            width: 100px;
-            height: 140px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            flex-shrink: 0;
         }
 
-        .book-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .book-item.selected .book-cover-wrapper {
+            outline: 3px solid var(--primary);
         }
 
         .book-title {
-            font-family: 'Nanum Myeongjo', serif;
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             line-height: 1.4;
         }
 
         .book-author {
-            font-size: 0.95rem;
+            font-size: 13px;
             color: var(--text-secondary);
-        }
-
-        .book-publisher {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .book-description {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
             overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .info-box {
-            background: #fffbf7;
-            border-left: 4px solid var(--accent);
-            padding: 1.25rem;
+        /* 추가 버튼 */
+        .add-button-wrapper {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 100;
+        }
+
+        .add-button {
+            padding: 14px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
             border-radius: 8px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 1rem;
-            line-height: 1.7;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(35, 131, 226, 0.3);
+            transition: all 0.2s;
+            display: none;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
-        .info-box strong {
-            color: var(--text-primary);
+        .add-button.show {
+            display: block;
+            animation: slideUp 0.3s ease;
         }
 
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
+        .add-button:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 6px 16px rgba(35, 131, 226, 0.4);
+            transform: translateY(-2px);
         }
 
-        .spinner {
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        .error {
-            background: #fff0f0;
-            border: 1px solid #ffcccc;
-            color: #cc0000;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .success {
-            background: #f0fff0;
-            border: 1px solid #ccffcc;
-            color: #008800;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 2rem 1.5rem;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        @keyframes fadeIn {
+        @keyframes slideUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -338,152 +284,290 @@
             }
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* 설정 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .modal.show {
+            display: flex;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        @media (max-width: 640px) {
-            .book-card {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .search-box {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
         }
 
-        .guide-link {
-            color: var(--accent);
-            text-decoration: none;
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .close-btn:hover {
+            background: var(--hover);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
             font-weight: 500;
+            color: var(--text);
+            margin-bottom: 8px;
         }
 
-        .guide-link:hover {
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .help-text a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .help-text a:hover {
             text-decoration: underline;
         }
 
-        .api-url-group {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+        .save-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
-        .api-url-group label {
-            font-size: 0.85rem;
+        .save-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* 빈 상태 */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
             color: var(--text-secondary);
         }
 
-        .api-url-group small {
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .empty-state-text {
+            font-size: 15px;
+        }
+
+        /* 로딩 스피너 */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 탭 컨텐츠 */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
             display: block;
-            margin-top: 0.25rem;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 40px 16px 80px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .book-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 16px;
+            }
+
+            .add-button-wrapper {
+                bottom: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1 class="logo">Opt</h1>
-        <p class="subtitle">클릭 한 번에 도서 정보를 노션에 가져오기</p>
-    </div>
-
     <div class="container">
-        <div class="setup-section">
-            <h2 class="section-title">
-                <span class="section-number">1</span>
-                API 설정
-            </h2>
-            
-            <div class="api-url-group">
-                <label for="apiUrl">서버 API URL (선택사항)</label>
-                <input type="text" id="apiUrl" placeholder="예: https://your-project.vercel.app/api/search">
-                <small>Vercel/Netlify에 배포한 서버 URL을 입력하세요. 예: https://your-project.vercel.app/api/search<br>
-                <strong>중요:</strong> 비워두면 현재 도메인의 API를 자동으로 사용합니다. (Vercel 배포 시 자동 작동)</small>
-            </div>
+        <div class="header">
+            <div class="icon">📚</div>
+            <h1 class="title">독서 트래커</h1>
+            <button class="settings-btn" onclick="openSettings()">⚙️ 설정</button>
+        </div>
 
-            <div class="input-group">
-                <label for="aladinKey">알라딘 API 키</label>
-                <input type="text" id="aladinKey" placeholder="알라딘 TTB 키를 입력하세요">
-                <div class="info-box">
-                    <strong>알라딘 API 키 발급:</strong> <a href="https://www.aladin.co.kr/ttb/wblog_manage.aspx" target="_blank" class="guide-link">여기</a>에서 무료로 발급받을 수 있습니다.
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="notionToken">노션 통합 토큰</label>
-                <input type="password" id="notionToken" placeholder="노션 Integration Token을 입력하세요">
-            </div>
-
-            <div class="input-group">
-                <label for="notionDatabase">노션 데이터베이스 ID</label>
-                <input type="text" id="notionDatabase" placeholder="데이터베이스 ID를 입력하세요">
-                <div class="info-box">
-                    <strong>노션 설정 가이드:</strong><br>
-                    1. <a href="https://www.notion.so/my-integrations" target="_blank" class="guide-link">노션 통합 페이지</a>에서 새 통합을 만듭니다.<br>
-                    2. 생성된 토큰을 복사합니다.<br>
-                    3. 도서 데이터베이스를 만들고 다음 속성을 추가합니다:<br>
-                    &nbsp;&nbsp;&nbsp;- <strong>Title</strong> (제목 타입)<br>
-                    &nbsp;&nbsp;&nbsp;- <strong>Author</strong> (텍스트 타입)<br>
-                    &nbsp;&nbsp;&nbsp;- <strong>Genre</strong> (텍스트 타입)<br>
-                    &nbsp;&nbsp;&nbsp;- <strong>Total</strong> (숫자 타입)<br>
-                    4. 데이터베이스 페이지에서 "..." → "연결" → 생성한 통합을 선택합니다.<br>
-                    5. 데이터베이스 URL에서 ID를 복사합니다. (예: notion.so/myworkspace/<strong>abc123...</strong>?v=...)
-                </div>
+        <div class="search-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchQuery" 
+                    class="search-input" 
+                    placeholder="책 제목이나 저자를 검색하세요"
+                    onkeypress="if(event.key==='Enter') searchBooks()"
+                >
+                <button class="search-btn" onclick="searchBooks()">검색</button>
             </div>
         </div>
 
-        <div class="search-container">
-            <h2 class="section-title">
-                <span class="section-number">2</span>
-                도서 검색
-            </h2>
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('search')">검색</button>
+            <button class="tab" onclick="switchTab('favorites')">찜한 책</button>
+            <button class="tab" onclick="switchTab('recent')">최근 추가</button>
+        </div>
 
-            <div class="search-box">
-                <input type="text" id="searchQuery" class="search-input" placeholder="책 제목이나 저자를 검색하세요">
-                <button class="btn btn-primary" onclick="searchBooks()">검색</button>
+        <div id="message"></div>
+
+        <div id="searchTab" class="tab-content active">
+            <div id="results"></div>
+        </div>
+
+        <div id="favoritesTab" class="tab-content">
+            <div class="empty-state">
+                <div class="empty-state-icon">❤️</div>
+                <div class="empty-state-text">찜한 책이 없습니다</div>
             </div>
+        </div>
 
-            <div id="message"></div>
-            <div id="results" class="results"></div>
+        <div id="recentTab" class="tab-content">
+            <div class="empty-state">
+                <div class="empty-state-icon">📖</div>
+                <div class="empty-state-text">최근 추가한 책이 없습니다</div>
+            </div>
         </div>
     </div>
 
-    <div class="footer">
-        Made with ♥ for Notion lovers | Inspired by <a href="https://nomadcoders.co/community/thread/10907" target="_blank" class="guide-link">Opt</a>
+    <div class="add-button-wrapper">
+        <button class="add-button" id="addButton" onclick="addSelectedToNotion()">
+            노션에 추가
+        </button>
+    </div>
+
+    <!-- 설정 모달 -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">설정</h2>
+                <button class="close-btn" onclick="closeSettings()">×</button>
+            </div>
+
+            <div class="input-group">
+                <label for="apiUrl">서버 API URL (선택)</label>
+                <input type="text" id="apiUrl" placeholder="https://your-project.vercel.app/api/search">
+                <div class="help-text">Vercel에 배포한 경우 비워두면 자동으로 설정됩니다</div>
+            </div>
+
+            <div class="input-group">
+                <label for="aladinKey">알라딘 API 키 *</label>
+                <input type="text" id="aladinKey" placeholder="TTB 키를 입력하세요">
+                <div class="help-text">
+                    <a href="https://www.aladin.co.kr/ttb/wblog_manage.aspx" target="_blank">여기</a>에서 무료로 발급받을 수 있습니다
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="notionToken">노션 통합 토큰 *</label>
+                <input type="password" id="notionToken" placeholder="Integration Token">
+                <div class="help-text">
+                    <a href="https://www.notion.so/my-integrations" target="_blank">노션 통합 페이지</a>에서 생성하세요
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="notionDatabase">노션 데이터베이스 ID *</label>
+                <input type="text" id="notionDatabase" placeholder="abc123...">
+                <div class="help-text">
+                    데이터베이스 URL에서 복사하세요<br>
+                    필수 속성: Title, Author, Genre, Total (숫자)
+                </div>
+            </div>
+
+            <button class="save-btn" onclick="saveSettings()">저장</button>
+        </div>
     </div>
 
     <script>
-        // 로컬 스토리지에서 설정 불러오기
+        let selectedBook = null;
+        let currentTab = 'search';
+
+        // 초기화
         window.addEventListener('load', () => {
             const apiUrl = localStorage.getItem('apiUrl');
             const aladinKey = localStorage.getItem('aladinKey');
@@ -494,103 +578,153 @@
             if (aladinKey) document.getElementById('aladinKey').value = aladinKey;
             if (notionToken) document.getElementById('notionToken').value = notionToken;
             if (notionDatabase) document.getElementById('notionDatabase').value = notionDatabase;
+
+            // 설정이 없으면 모달 자동 열기
+            if (!aladinKey || !notionToken || !notionDatabase) {
+                openSettings();
+            }
         });
 
-        // 엔터 키로 검색
-        document.getElementById('searchQuery').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') searchBooks();
-        });
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // 탭 버튼 활성화
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
 
-        async function searchBooks() {
-            const apiUrl = document.getElementById('apiUrl').value.trim();
-            const aladinKey = document.getElementById('aladinKey').value.trim();
-            const query = document.getElementById('searchQuery').value.trim();
-            const messageDiv = document.getElementById('message');
-            const resultsDiv = document.getElementById('results');
+            // 탭 컨텐츠 표시
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(tab + 'Tab').classList.add('active');
+        }
 
-            // 설정 저장
-            localStorage.setItem('apiUrl', apiUrl);
-            localStorage.setItem('aladinKey', aladinKey);
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('show');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('show');
+        }
+
+        function saveSettings() {
+            localStorage.setItem('apiUrl', document.getElementById('apiUrl').value.trim());
+            localStorage.setItem('aladinKey', document.getElementById('aladinKey').value.trim());
             localStorage.setItem('notionToken', document.getElementById('notionToken').value.trim());
             localStorage.setItem('notionDatabase', document.getElementById('notionDatabase').value.trim());
+            
+            showMessage('설정이 저장되었습니다', 'success');
+            closeSettings();
+        }
+
+        function showMessage(text, type = 'loading') {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="message ${type}">${text}</div>`;
+            
+            if (type === 'success' || type === 'error') {
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 3000);
+            }
+        }
+
+        async function searchBooks() {
+            const apiUrl = localStorage.getItem('apiUrl');
+            const aladinKey = localStorage.getItem('aladinKey');
+            const query = document.getElementById('searchQuery').value.trim();
+            const resultsDiv = document.getElementById('results');
 
             if (!aladinKey) {
-                messageDiv.innerHTML = '<div class="error">알라딘 API 키를 입력해주세요.</div>';
+                showMessage('설정에서 알라딘 API 키를 입력해주세요', 'error');
+                openSettings();
                 return;
             }
 
             if (!query) {
-                messageDiv.innerHTML = '<div class="error">검색어를 입력해주세요.</div>';
+                showMessage('검색어를 입력해주세요', 'error');
                 return;
             }
 
-            messageDiv.innerHTML = '<div class="loading"><div class="spinner"></div>검색 중...</div>';
+            showMessage('검색 중...');
             resultsDiv.innerHTML = '';
+            selectedBook = null;
+            document.getElementById('addButton').classList.remove('show');
 
             try {
                 let data;
+                const baseUrl = apiUrl ? apiUrl.replace('/api/search', '') : window.location.origin;
+                const searchApiUrl = `${baseUrl}/api/search`;
+
+                const response = await fetch(`${searchApiUrl}?ttbkey=${aladinKey}&query=${encodeURIComponent(query)}`);
                 
-                if (apiUrl) {
-                    // 서버 API 사용
-                    const response = await fetch(`${apiUrl}?ttbkey=${aladinKey}&query=${encodeURIComponent(query)}`);
-                    if (!response.ok) throw new Error(`서버 오류: ${response.status}`);
-                    data = await response.json();
-                } else {
-                    // 직접 알라딘 API 호출
-                    const aladinUrl = `https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${aladinKey}&Query=${encodeURIComponent(query)}&QueryType=Title&MaxResults=10&start=1&SearchTarget=Book&output=JS&Version=20131101`;
-                    const response = await fetch(aladinUrl);
-                    if (!response.ok) throw new Error(`알라딘 API 오류: ${response.status}`);
-                    data = await response.json();
-                }
+                if (!response.ok) throw new Error(`서버 오류: ${response.status}`);
+                data = await response.json();
 
                 if (!data.item || data.item.length === 0) {
-                    messageDiv.innerHTML = '<div class="error">검색 결과가 없습니다.</div>';
+                    showMessage('검색 결과가 없습니다', 'error');
+                    resultsDiv.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">검색 결과가 없습니다</div></div>';
                     return;
                 }
 
-                messageDiv.innerHTML = `<div class="success">${data.item.length}개의 도서를 찾았습니다. 원하는 책을 클릭하세요!</div>`;
+                showMessage(`${data.item.length}개의 책을 찾았습니다`, 'success');
                 
-                resultsDiv.innerHTML = data.item.map(book => `
-                    <div class="book-card" onclick='addToNotion(${JSON.stringify(book).replace(/'/g, "&#39;")})'>
-                        <img src="${book.cover}" alt="${book.title}" class="book-cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22140%22%3E%3Crect fill=%22%23e5e1dc%22 width=%22100%22 height=%22140%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2212%22%3E이미지 없음%3C/text%3E%3C/svg%3E'">
-                        <div class="book-info">
-                            <div class="book-title">${book.title}</div>
-                            <div class="book-author">${book.author}</div>
-                            <div class="book-publisher">${book.publisher} · ${book.pubDate}</div>
-                            ${book.description ? `<div class="book-description">${book.description}</div>` : ''}
-                        </div>
+                resultsDiv.innerHTML = `
+                    <div class="book-grid">
+                        ${data.item.map((book, index) => `
+                            <div class="book-item" onclick="selectBook(${index})">
+                                <div class="book-cover-wrapper">
+                                    <img src="${book.cover}" alt="${book.title}" class="book-cover" 
+                                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2216%22%3E이미지 없음%3C/text%3E%3C/svg%3E'">
+                                </div>
+                                <div class="book-title">${book.title}</div>
+                                <div class="book-author">${book.author}</div>
+                            </div>
+                        `).join('')}
                     </div>
-                `).join('');
+                `;
+
+                // 검색 결과 저장
+                window.searchResults = data.item;
 
             } catch (error) {
                 console.error('Error:', error);
-                messageDiv.innerHTML = `<div class="error">
-                    검색 중 오류가 발생했습니다.<br>
-                    <br>
-                    <strong>CORS 문제 해결방법:</strong><br>
-                    1. 위 "서버 API URL"에 배포된 서버 주소를 입력하세요<br>
-                    2. 또는 <a href="https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino" target="_blank" style="color: var(--accent);">CORS Unblock 확장프로그램</a> 설치<br>
-                    <br>
-                    에러: ${error.message}
-                </div>`;
+                showMessage('검색 중 오류가 발생했습니다. 설정을 확인해주세요', 'error');
             }
         }
 
-        async function addToNotion(book) {
-            const apiUrl = document.getElementById('apiUrl').value.trim();
-            const notionToken = document.getElementById('notionToken').value.trim();
-            const notionDatabase = document.getElementById('notionDatabase').value.trim();
-            const messageDiv = document.getElementById('message');
+        function selectBook(index) {
+            selectedBook = window.searchResults[index];
+            
+            // 모든 선택 해제
+            document.querySelectorAll('.book-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // 선택한 책 표시
+            document.querySelectorAll('.book-item')[index].classList.add('selected');
+            
+            // 추가 버튼 표시
+            document.getElementById('addButton').classList.add('show');
+        }
 
-            if (!notionToken || !notionDatabase) {
-                messageDiv.innerHTML = '<div class="error">노션 설정을 완료해주세요.</div>';
+        async function addSelectedToNotion() {
+            if (!selectedBook) {
+                showMessage('책을 선택해주세요', 'error');
                 return;
             }
 
-            messageDiv.innerHTML = '<div class="loading"><div class="spinner"></div>노션에 추가 중...</div>';
+            const apiUrl = localStorage.getItem('apiUrl');
+            const notionToken = localStorage.getItem('notionToken');
+            const notionDatabase = localStorage.getItem('notionDatabase');
+
+            if (!notionToken || !notionDatabase) {
+                showMessage('설정에서 노션 정보를 입력해주세요', 'error');
+                openSettings();
+                return;
+            }
+
+            showMessage('노션에 추가 중...');
+            document.getElementById('addButton').classList.remove('show');
 
             try {
-                // 서버 API URL 결정 (현재 도메인 또는 사용자 입력)
                 const baseUrl = apiUrl ? apiUrl.replace('/api/search', '') : window.location.origin;
                 const notionApiUrl = `${baseUrl}/api/add-to-notion`;
 
@@ -602,28 +736,36 @@
                     body: JSON.stringify({
                         token: notionToken,
                         databaseId: notionDatabase,
-                        book: book
+                        book: selectedBook
                     })
                 });
 
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    messageDiv.innerHTML = '<div class="success">✓ 노션에 성공적으로 추가되었습니다!</div>';
+                    showMessage('✓ 노션에 추가되었습니다!', 'success');
+                    selectedBook = null;
+                    document.querySelectorAll('.book-item').forEach(item => {
+                        item.classList.remove('selected');
+                    });
                 } else {
-                    console.error('Notion API Error:', result);
-                    messageDiv.innerHTML = `<div class="error">노션 추가 실패: ${result.error || '데이터베이스 설정을 확인해주세요.'}<br><br><small>속성 확인: Title (제목), Author (텍스트), Genre (텍스트), Total (숫자)</small></div>`;
+                    showMessage(`추가 실패: ${result.error || '설정을 확인해주세요'}`, 'error');
+                    document.getElementById('addButton').classList.add('show');
                 }
 
             } catch (error) {
                 console.error('Error:', error);
-                let errorMsg = '노션 추가 중 오류가 발생했습니다.<br>';
-                errorMsg += `토큰: ${notionToken ? '입력됨 ✓' : '미입력 ✗'}<br>`;
-                errorMsg += `DB ID: ${notionDatabase ? '입력됨 ✓' : '미입력 ✗'}<br>`;
-                errorMsg += `에러: ${error.message}`;
-                messageDiv.innerHTML = `<div class="error">${errorMsg}</div>`;
+                showMessage('노션 추가 중 오류가 발생했습니다', 'error');
+                document.getElementById('addButton').classList.add('show');
             }
         }
+
+        // 모달 외부 클릭시 닫기
+        document.getElementById('settingsModal').addEventListener('click', (e) => {
+            if (e.target.id === 'settingsModal') {
+                closeSettings();
+            }
+        });
     </script>
 </body>
 </html>
