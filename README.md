@@ -96,7 +96,7 @@ notion-book-widget/
 
 ```bash
 # 저장소 클론
-git clone https://github.com/your-username/notion-book-widget.git
+git clone https://github.com/chacha091/notion-book-widget.git
 cd notion-book-widget
 
 # Vercel CLI로 로컬 실행
