@@ -48,15 +48,6 @@
             margin-bottom: 40px;
         }
 
-        .icon {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-
         .title {
             font-size: 32px;
             font-weight: 700;
@@ -123,37 +114,6 @@
 
         .search-btn:hover {
             background: var(--primary-hover);
-        }
-
-        /* 탭 */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 24px;
-        }
-
-        .tab {
-            padding: 8px 12px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-
-        .tab.active {
-            color: var(--text);
-            border-bottom-color: var(--text);
-        }
-
-        .tab:hover {
-            color: var(--text);
-            background: var(--hover);
         }
 
         /* 메시지 */
@@ -434,15 +394,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* 탭 컨텐츠 */
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
         @media (max-width: 640px) {
             .container {
                 padding: 40px 16px 80px;
@@ -468,7 +419,7 @@
     <div class="container">
         <div class="header">
             <div class="icon">📚</div>
-            <h1 class="title">Add Book</h1>
+            <h1 class="title">독서 트래커</h1>
             <button class="settings-btn" onclick="openSettings()">⚙️ 설정</button>
         </div>
 
@@ -485,17 +436,8 @@
             </div>
         </div>
 
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('search')">검색</button>
-            <button class="tab" onclick="switchTab('favorites')">찜한 책</button>
-            <button class="tab" onclick="switchTab('recent')">최근 추가</button>
-        </div>
-
         <div id="message"></div>
-
-        <div id="searchTab" class="tab-content active">
-            <div id="results"></div>
-        </div>
+        <div id="results"></div>
     </div>
 
     <div class="add-button-wrapper">
@@ -549,7 +491,6 @@
 
     <script>
         let selectedBook = null;
-        let currentTab = 'search';
 
         // 초기화
         window.addEventListener('load', () => {
@@ -568,18 +509,6 @@
                 openSettings();
             }
         });
-
-        function switchTab(tab) {
-            currentTab = tab;
-            
-            // 탭 버튼 활성화
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // 탭 컨텐츠 표시
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(tab + 'Tab').classList.add('active');
-        }
 
         function openSettings() {
             document.getElementById('settingsModal').classList.add('show');
