@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const aladinUrl = `https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ttbkey}&Query=${encodeURIComponent(query)}&QueryType=Title&MaxResults=10&start=1&SearchTarget=Book&output=JS&Version=20131101`;
+    const aladinUrl = `https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ttbkey}&Query=${encodeURIComponent(query)}&QueryType=Title&MaxResults=10&start=1&SearchTarget=Book&output=JS&Version=20131101&Cover=Big`;
     
     const response = await fetch(aladinUrl);
     const data = await response.json();
